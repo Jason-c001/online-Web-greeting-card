@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>母亲 · 华诞 | 高级生日纪念</title>
+    <style>
+        /* 全局重置与高级基调 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', 'Times New Roman', '宋体', serif;
+            background-color: #1e1a1c;  /* 深邃背景衬托质感 */
+            color: #3e2c2c;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* 优雅衬线字体 (无网络则用serif回退) */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+
+        /* 主容器 – 视差滚动层 */
+        .parallax-wrapper {
+            perspective: 10px;
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #c19a8b #2f2426;
+        }
+
+        .parallax-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+        .parallax-wrapper::-webkit-scrollbar-track {
+            background: #2f2426;
+        }
+        .parallax-wrapper::-webkit-scrollbar-thumb {
+            background: #c19a8b;
+            border-radius: 20px;
+        }
+
+        /* ----- 视差层 ----- */
+        .parallax-group {
+            position: relative;
+            transform-style: preserve-3d;
+            min-height: 100vh;
+        }
+
+        /* 背景层：深色纹理 + 漂浮金箔 */
+        .background-base {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, #35292b, #1f1618);
+            transform: translateZ(-10px) scale(2.1);  /* 慢速背景 */
+            z-index: -2;
+        }
+
+        .gold-motes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="10" r="2.5" fill="%23d5b396" opacity="0.25"/><circle cx="45" cy="32" r="3" fill="%23eaceaa" opacity="0.3"/><circle cx="18" cy="78" r="2" fill="%23bd9b7c" opacity="0.2"/><circle cx="90" cy="15" r="4" fill="%23dbbc94" opacity="0.2"/><circle cx="120" cy="60" r="2.2" fill="%23e4c7a9" opacity="0.3"/><circle cx="200" cy="120" r="5" fill="%23be9f84" opacity="0.15"/></svg>');
+            opacity: 0.5;
+            transform: translateZ(-8px) scale(1.8);
+            z-index: -1;
+        }
+
+        /* 中层：主要叙事内容 (正常流) */
+        .content-layer {
+            position: relative;
+            transform: translateZ(0);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            color: #f4e7df;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ----- 高级质感组件 ----- */
+
+        /* 开篇诗意的标题 */
+        .hero-title {
+            margin-top: 15vh;
+            margin-bottom: 5vh;
+            text-align: center;
+            animation: fadeUp 2.2s ease-out;
+        }
+
+        .floral-divider {
+            font-size: 2.5rem;
+            letter-spacing: 12px;
+            color: #e7cfb5;
+            opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title h1 {
+            font-size: 5.8rem;
+            font-weight: 400;
+            line-height: 1.1;
+            color: #f2ded0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 0 15px 25px #1f0e0e;
+        }
+
+        .hero-title h2 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: #ddbca7;
+            border-top: 2px solid #b28b78;
+            border-bottom: 2px solid #b28b78;
+            display: inline-block;
+            padding: 0.6rem 2rem;
+            backdrop-filter: blur(3px);
+            background: rgba(30,20,20,0.1);
+        }
+
+        /* 时光画廊 – 优雅相册 */
+        .gallery-section {
+            width: 100%;
+            margin: 8rem 0;
+            position: relative;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-label span {
+            font-size: 1.8rem;
+            color: #dcb69b;
+            letter-spacing: 6px;
+        }
+
+        .section-label .line {
+            height: 2px;
+            width: 120px;
+            background: linear-gradient(90deg, transparent, #dbbca5, transparent);
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 40px 25px;
+            padding: 20px 10px;
+        }
+
+        .memory-card {
+            background: rgba(50, 35, 35, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(220, 180, 160, 0.25);
+            border-radius: 40px 40px 30px 30px;
+            padding: 30px 18px 25px;
+            box-shadow: 0 30px 40px -20px #0a0507;
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.3s;
+            text-align: center;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: #e3baa4;
+            background: rgba(75, 55, 55, 0.55);
+        }
+
+        .photo-frame {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            background: #46322f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4.8rem;
+            border: 3px solid #ddb69f;
+            box-shadow: 0 15px 20px #1e1315;
+            transition: 0.3s;
+        }
+
+        .memory-card:hover .photo-frame {
+            border-color: #f5cfb5;
+            box-shadow: 0 0 0 4px #9f7f6f;
+        }
+
+        .bless-word {
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: #f5dac8;
+            margin-bottom: 8px;
+            letter-spacing: 6px;
+        }
+
+        .bless-sub {
+            font-size: 1.1rem;
+            color: #cdaa99;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* 手写祝福信区 */
+        .letter-section {
+            width: 90%;
+            background: rgba(40, 28, 28, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid #ab887a;
+            border-radius: 120px 120px 60px 60px;
+            padding: 3rem 3.5rem;
+            margin: 5rem 0 7rem;
+            box-shadow: 0 50px 60px -30px black;
+            transform: rotate(0.5deg);
+        }
+
+        .letter-section p {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #f3ded1;
+            line-height: 1.7;
+            text-align: center;
+            font-style: italic;
+            word-break: break-word;
+        }
+
+        .letter-section .signature {
+            font-size: 3rem;
+            font-weight: 500;
+            margin-top: 2rem;
+            color: #f3ccb5;
+            text-align: right;
+            border-top: 1px dashed #946b5b;
+            padding-top: 1.5rem;
+            font-style: normal;
+        }
+
+        /* 双字祝福珠 */
+        .pearls-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px 55px;
+            margin: 6rem 0 5rem;
+        }
+
+        .pearl {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pearl-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ab7f6b, #704e42);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: #f7ebdd;
+            border: 3px solid #ba9b89;
+            box-shadow: 0 15px 20px #261c1b;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .pearl:hover .pearl-circle {
+            transform: scale(1.1);
+            border-color: #eaccb3;
+            background: radial-gradient(circle at 30% 30%, #b58d78, #8b6355);
+        }
+
+        .pearl-label {
+            font-size: 1.7rem;
+            color: #e5c1ab;
+            letter-spacing: 2px;
+        }
+
+        /* 生日蛋糕 & 最终祝福 */
+        .finale-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin: 6rem 0 3rem;
+            padding: 2rem;
+            border-top: 2px solid #9a7869;
+            border-bottom: 2px solid #9a7869;
+            background: linear-gradient(90deg, transparent, #3a2c28, transparent);
+        }
+
+        .cake-icon {
+            font-size: 7rem;
+            filter: drop-shadow(0 25px 15px #1f1210);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .cake-icon:hover {
+            transform: scale(1.12) rotate(2deg);
+            filter: drop-shadow(0 30px 25px #311f1b);
+        }
+
+        .grand-bless {
+            font-size: 3.2rem;
+            font-weight: 400;
+            color: #f2dac8;
+            text-align: center;
+            margin-top: 20px;
+            text-shadow: 0 5px 15px #2f1b15;
+        }
+
+        .grand-bless small {
+            font-size: 1.7rem;
+            display: block;
+            color: #caad9b;
+            margin-top: 15px;
+        }
+
+        /* 动画 */
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 右下角静物装饰 */
+        .art-signature {
+            position: fixed;
+            bottom: 20px;
+            right: 25px;
+            font-size: 1rem;
+            color: #a48c81;
+            opacity: 0.5;
+            z-index: 10;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 700px) {
+            .hero-title h1 { font-size: 3.5rem; }
+            .hero-title h2 { font-size: 1.8rem; }
+            .letter-section p { font-size: 1.6rem; }
+            .grand-bless { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="parallax-wrapper">
+    <!-- 背景层：深邃 + 金箔 -->
+    <div class="background-base"></div>
+    <div class="gold-motes"></div>
+
+    <!-- 主内容层 -->
+    <div class="content-layer">
+
+        <!-- 诗意的开篇 -->
+        <div class="hero-title">
+            <div class="floral-divider">⚘ ⚘ ⚘</div>
+            <h1>致 母亲</h1>
+            <h2>岁月沉香 · 芳华永驻</h2>
+        </div>
+
+        <!-- 时光画廊 · 照片与二字祝福 (高级质感) -->
+        <div class="gallery-section">
+            <div class="section-label">
+                <span class="line"></span>
+                <span>记 忆 花 园</span>
+                <span class="line"></span>
+            </div>
+            <div class="memory-grid">
+                <!-- 卡片 1 -->
+                <div class="memory-card">
+                    <div class="photo-frame">👩‍🍳</div>
+                    <div class="bless-word">味·道</div>
+                    <div class="bless-sub">家的温度</div>
+                </div>
+                <!-- 卡片 2 -->
+                <div class="memory-card">
+                    <div class="photo-frame">🌹</div>
+                    <div class="bless-word">芳·华</div>
+                    <div class="bless-sub">青春永驻</div>
+                </div>
+                <!-- 卡片 3 -->
+                <div class="memory-card">
+                    <div class="photo-frame">📸</div>
+                    <div class="bless-word">念·您</div>
+                    <div class="bless-sub">时时刻刻</div>
+                </div>
+                <!-- 卡片 4 -->
+                <div class="memory-card">
+                    <div class="photo-frame">☕</div>
+                    <div class="bless-word">怡·然</div>
+                    <div class="bless-sub">从容自在</div>
+                </div>
+                <!-- 卡片 5 (增加一张) -->
+                <div class="memory-card">
+                    <div class="photo-frame">🧣</div>
+                    <div class="bless-word">温·柔</div>
+                    <div class="bless-sub">岁月静好</div>
+                </div>
+                <!-- 卡片 6 -->
+                <div class="memory-card">
+                    <div class="photo-frame">🌺</div>
+                    <div class="bless-word">谢·您</div>
+                    <div class="bless-sub">无尽感恩</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 手写祝福信 (优雅质感) -->
+        <div class="letter-section">
+            <p>
+                妈妈，您的爱是时光里最温柔的河。<br>
+                流过春夏，滋养了我全部的旅程。<br>
+                今日良辰，愿您眉眼含笑，日日欢喜。
+            </p>
+            <div class="signature">—— 永远爱您的孩子</div>
+        </div>
+
+        <!-- 双字祝福珠 (安康 欢喜 如意 优雅 从容 念您) -->
+        <div class="pearls-container">
+            <div class="pearl">
+                <div class="pearl-circle">安·康</div>
+                <span class="pearl-label">身体安泰</span>
+            </div>
+            <div class="pearl">
+                <div class="pearl-circle">欢·喜</div>
+                <span class="pearl-label">笑口常开</span>
+            </div>
+            <div class="pearl">
+                <div class="pearl-circle">如·意</div>
+                <span class="pearl-label">万事顺遂</span>
+            </div>
+            <div class="pearl">
+                <div class="pearl-circle">优·雅</div>
+                <span class="pearl-label">岁月不败</span>
+            </div>
+            <div class="pearl">
+                <div class="pearl-circle">从·容</div>
+                <span class="pearl-label">自在如风</span>
+            </div>
+            <div class="pearl">
+                <div class="pearl-circle">念·您</div>
+                <span class="pearl-label">时刻在心</span>
+            </div>
+        </div>
+
+        <!-- 生日蛋糕 & 终极祝福 -->
+        <div class="finale-area">
+            <div class="cake-icon" id="cakeGlow">🎂</div>
+            <div class="grand-bless" id="finalBless">
+                <span>❤️ 安康 · 欢喜 · 爱您 ❤️</span>
+                <small>—— 生日快乐，我最美的妈妈</small>
+            </div>
+        </div>
+
+        <!-- 微末装饰 -->
+        <div style="height: 30px;"></div>
+    </div> <!-- end content-layer -->
+
+    <!-- 右下角签名水印（高级感） -->
+    <div class="art-signature">pour maman · 生日华诞</div>
+</div> <!-- end parallax-wrapper -->
+
+<!-- 简单的交互：点击蛋糕切换祝福语 + 微光特效 (高级氛围感) -->
+<script>
+    (function() {
+        const cake = document.getElementById('cakeGlow');
+        const finalBless = document.getElementById('finalBless');
+
+        // 存储几句典雅的祝福
+        const blessings = [
+            '<span>❤️ 安康 · 欢喜 · 爱您 ❤️</span><small>—— 生日快乐，我最美的妈妈</small>',
+            '<span>🌸 芳华 · 从容 · 谢您 🌸</span><small>—— 岁月悠长，唯您最美</small>',
+            '<span>🌺 优雅 · 如意 · 念您 🌺</span><small>—— 愿您被时光温柔以待</small>',
+            '<span>✨ 怡然 · 温·柔 · 永伴 ✨</span><small>—— 您的笑是人间四月天</small>'
+        ];
+
+        let index = 0;
+        cake.addEventListener('click', () => {
+            // 切换祝福
+            index = (index + 1) % blessings.length;
+            finalBless.innerHTML = blessings[index];
+
+            // 添加微光闪烁
+            cake.style.transform = 'scale(1.2) rotate(3deg)';
+            cake.style.transition = 'transform 0.2s, filter 0.4s';
+            cake.style.filter = 'drop-shadow(0 0 15px #fbc1a0)';
+            setTimeout(() => {
+                cake.style.transform = 'scale(1) rotate(0)';
+                cake.style.filter = 'drop-shadow(0 25px 15px #1f1210)';
+            }, 300);
+
+            // 同时轻轻改变背景层? 不改背景，保留优雅
+        });
+
+        // 轻轻浮动金箔效果 (随机移动一点，纯氛围)
+        const motes = document.querySelector('.gold-motes');
+        if (motes) {
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth) * 6;
+                const y = (e.clientY / window.innerHeight) * 6;
+                motes.style.transform = `translateZ(-8px) scale(1.8) translate(${x}px, ${y}px)`;
+            });
+        }
+    })();
+</script>
+</body>
+</html>
